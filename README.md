@@ -116,9 +116,11 @@ Trong nội dung môn học, chúng tôi tìm kiếm các phương pháp khác n
     - SSA-GAN: Mô hình này có kiến trúc khá giống với DF-GAN, thay vì sử dụng khối UPBlock, họ sử dụng khối **SSACN**, kiến trúc khối này có áp dụng layer `Semantic-Spatial Condition Batch Normalization`. Đây là một layer được trình bày trong một nghiên cứu trước đó [SD-GAN](https://arxiv.org/pdf/1904.01480.pdf). Đây giống như 1 phương pháp BN-chuẩn hóa dữ liệu, nhưng nó sẽ chuẩn hóa theo từng chiều, điều này cho phép sử lý thông tin 1 cách riêng biệt hơn. Chúng tôi nghĩ việc này nếu áp dụng trong UPBlock có thể cải thiện(**việc loại bỏ BN cũng được nhắc đến trong bài báo gốc của mô hình**)
       <img src="UPBlock-v2.png" width="850px" height="300px"/>
 
-    - XMC-GAN: Sự khác biệt đầu tiên là việc xử lý text đầu vào là dùng mô hình [BERT](https://arxiv.org/abs/1810.04805), Trong phần **G**, mô hình sử dụng khối **ResBlockUp**. Theo đánh giá của chúng tôi, mô hình sử dụng đầu vào cho layer tiếp theo là 2 lần dữ liệu về text(**một là `word embeddings` và `sentence embeddings`**). Và trong khối **ResBlockUp** họ cũng sử dụng layer BN. Để có thể áp dụng các phần này vào việc cải tiến mô hình, chúng tôi đề xuất cách:
-      - Sử dụng **BERT** cho việc xử lý và áp dụng text
-      - Đồng thời áp dụng cả **BN** như đề xuất cải tiến 1.
+    - XMC-GAN: Sự khác biệt đầu tiên là việc xử lý text đầu vào là dùng mô hình [BERT](https://arxiv.org/abs/1810.04805), Trong phần **G**, mô hình sử dụng khối **ResBlockUp**. Theo đánh giá của chúng tôi, mô hình sử dụng đầu vào cho layer tiếp theo là 2 lần dữ liệu về text(**một là `word embeddings` và `sentence embeddings`**). Và trong khối **ResBlockUp** họ cũng sử dụng layer BN.
+  
+Để có thể áp dụng các phần này vào việc cải tiến mô hình, chúng tôi đề xuất cách:
+    - Sử dụng **BERT** cho việc xử lý và áp dụng text
+    - Đồng thời áp dụng cả **BN** như đề xuất cải tiến 1.
 
   - **Discriminator**: Phần phân biệt ảnh thật giả trong các mô hình không có đề cập quá nhiều, chúng tôi nghiên cứu các bài báo gần đây thì đa phần họ đều không chỉnh sửa quá nhiều phần này. Do vậy chúng tôi cũng không đi sâu để tìm phương pháp cải thiện cho phần này.
 
