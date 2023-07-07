@@ -119,6 +119,7 @@ Trong nội dung môn học, chúng tôi tìm kiếm các phương pháp khác n
     - XMC-GAN: Sự khác biệt đầu tiên là việc xử lý text đầu vào là dùng mô hình [BERT](https://arxiv.org/abs/1810.04805), Trong phần **G**, mô hình sử dụng khối **ResBlockUp**. Theo đánh giá của chúng tôi, mô hình sử dụng đầu vào cho layer tiếp theo là 2 lần dữ liệu về text(**một là `word embeddings` và `sentence embeddings`**). Và trong khối **ResBlockUp** họ cũng sử dụng layer BN.
   
 Để có thể áp dụng các phần này vào việc cải tiến mô hình, chúng tôi đề xuất cách:
+
     - Sử dụng **BERT** cho việc xử lý và áp dụng text
     - Đồng thời áp dụng cả **BN** như đề xuất cải tiến 1.
 
