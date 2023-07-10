@@ -64,7 +64,7 @@ def build_word_dict(pickle_path):
     return n_words, wordtoix
 
 
-def sample_example(wordtoix, netG, text_encoder, args):
+def sample_example(wordtoix, netG, text_encoder, args, save=True):
     batch_size, device = args.imgs_per_sent, args.device
     sentence, img_save_path = args.sentence, args.samples_save_dir
     truncation, trunc_rate = args.truncation, args.trunc_rate
@@ -87,7 +87,8 @@ def sample_example(wordtoix, netG, text_encoder, args):
             sent_emb = sent_embs[i].unsqueeze(0).repeat(batch_size, 1)
             fakes = netG(noise, sent_emb)
             img_name = osp.join(img_save_path,'Sent%03d.png'%(i+1))
-            vutils.save_image(fakes.data, img_name, nrow=4, range=(-1, 1), normalize=True)
+            if save:
+                vutils.save_image(fakes.data, img_name, nrow=4, range=(-1, 1), normalize=True)
             torch.cuda.empty_cache()
 
     return fakes.data
@@ -114,26 +115,26 @@ def main(args):
         print('Load %s for NetG'%(args.checkpoint))
         print("************ Start sampling ************")
     start_t = time.time()
-    data_fake_image = sample_example(wordtoix, netG, text_encoder, args)
+    data_fake_image = sample_example(wordtoix, netG, text_encoder, args, False)
     end_t = time.time()
     if (args.multi_gpus==True) and (get_rank() != 0):
         None
     else:
         print('*'*40)
-        print('Sampling done, %.2fs cost, saved to %s'%(end_t-start_t, args.samples_save_dir))
+        print('Sampling done, %.2fs cost'%(end_t-start_t))
         print('*'*40)
 
     # TODO Show image
     data_fake_image = data_fake_image.cpu()
     data_fake_image = data_fake_image.numpy()
-    fig, axes = plt.subplots(4,4, figsize=(10,10))
+    fig, axes = plt.subplots(4,4, figsize=(5,5))
 
     axes = axes.ravel()
     for i in range(len(data_fake_image)):
         axes[i].imshow(data_fake_image[i].transpose(1,2,0))
         axes[i].axis('off')
     
-    plt.title(args.sentence)
+    fig.suptitle(args.sentence)
     plt.tight_layout()
     plt.show()
 

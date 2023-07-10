@@ -103,27 +103,34 @@ bash scripts/sample.sh ./cfg/bird.yml
 
 ### Model Improvement
 
-Trong nội dung môn học, chúng tôi tìm kiếm các phương pháp khác nhau để có thể cải thiện độ chính xác của mô hình, chúng tôi phân tích mô hình thành từng bước để có thể đánh giá và áp dụng các phương pháp khác tốt hơn.
+<!-- Trong nội dung môn học, chúng tôi tìm kiếm các phương pháp khác nhau để có thể cải thiện độ chính xác của mô hình, chúng tôi phân tích mô hình thành từng bước để có thể đánh giá và áp dụng các phương pháp khác tốt hơn. -->
+In the course, we look for different methods that can improve the accuracy of the model, we analyze the model step by step so that we can evaluate and apply other methods better.
 
-- Chúng tôi sử dụng các mô hình mới hơn dựa trên kiến trúc GAN để so sánh:
+- We use newer models based on the GAN architecture for comparison:
   - [Text to Image Generation with Semantic-Spatial Aware GAN](https://arxiv.org/pdf/2104.00567.pdf)
   - [Cross-Modal Contrastive Learning for Text-to-Image Generation](https://arxiv.org/pdf/2101.04702.pdf)
-- Các phần chúng tôi đánh giá và đề xuất phương pháp:
+- The parts we evaluate and recommend the method:
 
-  - **Processing text**: Từ bài báo AttnGAN, họ đề xuất một phương pháp xử lý text, thì các bài báo làm về chủ đề này sau này sử dụng lại ý tưởng này khá nhiều. Do đó chúng tôi không đề suất thêm phương pháp nào trong phần này cả
-  - **Generator**: Phần được các nghiên cứu tập trung tìm các cách tiếp cận khác nhau, chúng tôi tập trung tìm hiểu phần này và đề xuất các cách cải thiện cho mô hình chúng tôi đang triển khai.
+  - **Processing text**: From the paper AttnGAN, they proposed a method of text processing, then the articles on the topic Text-to-Image later mostly reuse this idea quite a lot. So in this section we do not focus on ways to compare.
+  <!-- Từ bài báo AttnGAN, họ đề xuất một phương pháp xử lý text, thì các bài báo về chủ đề Text-to-Image sau này đa phần sử dụng lại ý tưởng này khá nhiều. Vì thế phần này chúng tôi không tập trung tìm hiểu các cách để so sánh. -->
+  - **Generator**: The part where research focus on finding different approaches, we focus on this part. We'll compare and suggest improvements to the model we're implementing based on comparisons with better models.
+  <!-- Phần được các nghiên cứu tập trung tìm các cách tiếp cận khác nhau, chúng tôi tập trung tìm hiểu phần này. Chúng tôi sẽ so sánh và đề xuất các cách cải thiện cho mô hình chúng tôi đang triển khai dựa trên sự so sánh với các mô hình tốt hơn. -->
 
-    - SSA-GAN: Mô hình này có kiến trúc khá giống với DF-GAN, thay vì sử dụng khối UPBlock, họ sử dụng khối **SSACN**, kiến trúc khối này có áp dụng layer `Semantic-Spatial Condition Batch Normalization`. Đây là một layer được trình bày trong một nghiên cứu trước đó [SD-GAN](https://arxiv.org/pdf/1904.01480.pdf). Đây giống như 1 phương pháp BN-chuẩn hóa dữ liệu, nhưng nó sẽ chuẩn hóa theo từng chiều, điều này cho phép sử lý thông tin 1 cách riêng biệt hơn. Chúng tôi nghĩ việc này nếu áp dụng trong UPBlock có thể cải thiện(**việc loại bỏ BN cũng được nhắc đến trong bài báo gốc của mô hình**)
+  <!-- SSA-GAN: Mô hình này có kiến trúc khá giống với DF-GAN, thay vì sử dụng khối UPBlock, họ sử dụng khối **SSACN**, kiến trúc khối này có áp dụng layer `Semantic-Spatial Condition Batch Normalization`. Đây là một layer được trình bày trong một nghiên cứu trước đó [SD-GAN](https://arxiv.org/pdf/1904.01480.pdf). Đây giống như 1 phương pháp BN-chuẩn hóa dữ liệu, nhưng nó sẽ chuẩn hóa theo từng chiều, điều này cho phép sử lý thông tin 1 cách riêng biệt hơn. Chúng tôi nghĩ việc này nếu áp dụng trong UPBlock có thể cải thiện(**việc loại bỏ BN cũng được nhắc đến trong bài báo gốc của mô hình**) -->
+
+    - SSA-GAN: This model has quite similar architecture to DF-GAN, instead of using UPBlock block, they use **SSACN** block, this block architecture applies layer `Semantic-Spatial Condition Batch Normalization` . This is a layer presented in an earlier study [SD-GAN](https://arxiv.org/pdf/1904.01480.pdf). This is like a BN-normalize method, but it normalizes each dimension, which allows for more discrete processing of information. We think this if applied in UPBlock can improve (**the removal of BN is also mentioned in the original paper of the model**)
       <img src="UPBlock-v2.png" width="850px" height="300px"/>
 
-    - XMC-GAN: Sự khác biệt đầu tiên là việc xử lý text đầu vào là dùng mô hình [BERT](https://arxiv.org/abs/1810.04805), Trong phần **G**, mô hình sử dụng khối **ResBlockUp**. Theo đánh giá của chúng tôi, mô hình sử dụng đầu vào cho layer tiếp theo là 2 lần dữ liệu về text(**một là `word embeddings` và `sentence embeddings`**). Và trong khối **ResBlockUp** họ cũng sử dụng layer BN.
+    <!-- - XMC-GAN: Sự khác biệt đầu tiên là việc xử lý text đầu vào là dùng mô hình [BERT](https://arxiv.org/abs/1810.04805), Trong phần **G**, mô hình sử dụng khối **ResBlockUp**. Theo đánh giá của chúng tôi, mô hình sử dụng đầu vào cho layer tiếp theo là 2 lần dữ liệu về text(**một là `word embeddings` và `sentence embeddings`**). Và trong khối **ResBlockUp** họ cũng sử dụng layer BN. -->
+    - XMC-GAN: The first difference is that the input text processing is using the [BERT](https://arxiv.org/abs/1810.04805) model, In the **G** section, the model uses blocks **ResBlockUp**. According to our assessment, the model uses input for the next layer as 2 times the text data (**one is `word embeddings` and `sentence embeddings`**). And in the **ResBlockUp** block they also use the BN layer.
   
 Để có thể áp dụng các phần này vào việc cải tiến mô hình, chúng tôi đề xuất cách:
 
     - Sử dụng **BERT** cho việc xử lý và áp dụng text
     - Đồng thời áp dụng cả **BN** như đề xuất cải tiến 1.
 
-  - **Discriminator**: Phần phân biệt ảnh thật giả trong các mô hình không có đề cập quá nhiều, chúng tôi nghiên cứu các bài báo gần đây thì đa phần họ đều không chỉnh sửa quá nhiều phần này. Do vậy chúng tôi cũng không đi sâu để tìm phương pháp cải thiện cho phần này.
+  - **Discriminator**: This section distinguishes the generated image from the original image. In the articles proposing the new model, they don't mention too much, when we study the recent articles, most of them don't edit this part too much. Therefore, we do not go deep to find ways to improve this part.
+  <!-- Phần này phân biệt ảnh được sinh ra và ảnh gốc. Trong các bài báo đề xuất mô hình mới họ không có đề cập quá nhiều, chúng tôi nghiên cứu các bài báo gần đây thì đa phần họ đều không chỉnh sửa quá nhiều phần này. Do vậy chúng tôi cũng không đi sâu để tìm phương pháp cải thiện cho phần này. -->
 
 ### Download Pretrained Model
 

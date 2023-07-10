@@ -30,7 +30,9 @@ sample_times: 10
 npz_path: ../data/birds/npz/bird_val256_FIDK0.npz
 example_captions: ./example_captions/bird.txt
 samples_save_dir: ./samples/bird/
-checkpoint: ./saved_models/bird/pretrained/state_epoch_1220.pth
+# ./saved_models/bird/pretrained/state_epoch_1220.pth 
+# ./saved_models/bird/base_normal_bird_256_2023_06_16_07_55_35/state_epoch_070.pth
+checkpoint: ./saved_models/bird/pretrained/state_epoch_1220.pth 
 
 save_image: False
 val_save_dir: ./vals/bird/
